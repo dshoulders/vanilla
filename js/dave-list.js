@@ -1,4 +1,7 @@
+import { registerComponent } from './utils/components.js'
 import './dave.js'
+
+const elementName = 'app-dave-list';
 
 const template = /*html*/`
     <style>
@@ -17,59 +20,43 @@ const template = /*html*/`
     </div>
 `
 
-const templateNode = document.createElement('template')
-
-templateNode.setAttribute('id', 'dave-list')
-templateNode.innerHTML = template
-
-document.body.appendChild(templateNode)
-
-class DaveList extends HTMLElement {
-    constructor() {
-        super();
-
-        const template = document.getElementById('dave-list')
-        const templateContent = template.content
-        const shadowRoot = 
-            this.attachShadow({mode: 'open'})
-            .appendChild(templateContent.cloneNode(true))
+const onConnected = ({ root }) => {
+    const davesElement = root.querySelector('#daves')
+    
+    const addDave = () => {
+        davesElement.appendChild(document.createElement('app-dave'))
     }
 
-    connectedCallback() {
+    const removeDave = () => {
 
-        const daves = this.shadowRoot.querySelector('#daves')
-
-        const addDave = () => {
-            daves.appendChild(document.createElement('app-dave'))
+        if (davesElement.childElementCount > 0) {
+            davesElement.removeChild(davesElement.lastElementChild)
         }
+    }
 
-        const removeDave = () => {
+    for (let i = 0; i < 3; i++) {
+        addDave()
+    }
 
-            if (daves.childElementCount > 0) {
-                daves.removeChild(daves.lastElementChild)
-            }
-        }
-
-        for (let i = 0; i < 3; i++) {
+    root.querySelector('#add').addEventListener(
+        'click',
+        () => {
+            window.appState = window.appState + 1
             addDave()
         }
+    )
 
-        this.shadowRoot.querySelector('#add').addEventListener(
-            'click',
-            () => {
-                window.appState = window.appState + 1
-                addDave()
-            }
-        )
-
-        this.shadowRoot.querySelector('#remove').addEventListener(
-            'click',
-            () => {
-                window.appState = Math.max(0, window.appState + 1)
-                removeDave()
-            }
-        )
-    }
+    root.querySelector('#remove').addEventListener(
+        'click',
+        () => {
+            window.appState = Math.max(0, window.appState + 1)
+            removeDave()
+        }
+    )
 }
 
-customElements.define('app-dave-list', DaveList)
+registerComponent({
+    elementName,
+    template,
+    onConnected
+})
