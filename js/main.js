@@ -1,7 +1,9 @@
-import './dave-list.js'
+import './list.js'
 
-window.appState = 0;
+window.appState = {
+    listItems: [{  }],
+};
 
-const appRoot = document.createElement('app-dave-list')
+const appRoot = document.createElement('app-list')
 
 document.querySelector('.root').appendChild(appRoot)

@@ -1,19 +1,19 @@
 import { registerComponent } from './utils/components.js'
-import './dave.js'
+import './listItem.js'
 
-const elementName = 'app-dave-list';
+const elementName = 'app-list';
 
 const template = /*html*/`
     <style>
-        .dave-list {
+        .list {
             border: 1px solid red;
             padding: 5px;
         }
     </style>
 
-    <div class="dave-list">
+    <div class="list">
 
-        <div id="daves" class="daves"></div>
+        <div id="listItems" class="list"></div>
 
         <button id="add">Add</button>
         <button id="remove">Remove</button>
@@ -21,28 +21,28 @@ const template = /*html*/`
 `
 
 const onConnected = ({ root }) => {
-    const davesElement = root.querySelector('#daves')
+    const listElement = root.querySelector('#listItems')
     
-    const addDave = () => {
-        davesElement.appendChild(document.createElement('app-dave'))
+    const addListItem = () => {
+        listElement.appendChild(document.createElement('app-list-item'))
     }
 
-    const removeDave = () => {
+    const removeListItem = () => {
 
-        if (davesElement.childElementCount > 0) {
-            davesElement.removeChild(davesElement.lastElementChild)
+        if (listElement.childElementCount > 0) {
+            listElement.removeChild(listElement.lastElementChild)
         }
     }
 
     for (let i = 0; i < 3; i++) {
-        addDave()
+        addListItem()
     }
 
     root.querySelector('#add').addEventListener(
         'click',
         () => {
             window.appState = window.appState + 1
-            addDave()
+            addListItem()
         }
     )
 
@@ -50,7 +50,7 @@ const onConnected = ({ root }) => {
         'click',
         () => {
             window.appState = Math.max(0, window.appState + 1)
-            removeDave()
+            removeListItem()
         }
     )
 }
