@@ -12,7 +12,10 @@ export function registerTemplate(template, id) {
 export function registerComponent({
     elementName,
     template,
+    observedAttributes,
     onConnected,
+    onDisconnected,
+    onAttributeChanged,
 }) {
 
     registerTemplate(template, elementName)
@@ -26,9 +29,19 @@ export function registerComponent({
             this.attachShadow({mode: 'open'})
                 .appendChild(templateContent.cloneNode(true))
         }
+
+        static get observedAttributes() { return observedAttributes }
     
         connectedCallback() {
-            onConnected({ root: this.shadowRoot });
+            onConnected({ root: this.shadowRoot })
+        }
+
+        disconnectedCallback() {
+            onDisconnected({ root: this.shadowRoot })
+        }
+
+        attributeChangedCallback(name, oldValue, newValue) {
+            onAttributeChanged({ root: this.shadowRoot, name, oldValue, newValue })
         }
     }
     
