@@ -11,14 +11,10 @@ const template = /*html*/`
         }
     </style>
     <div class="list-item">
-        <span class="name">Dave</span>
+        <span class="name"></span>
         <button class="change">change</button>
     </div>
 `
-
-const onUpdate = ({ root, props }) => {
-    root.querySelector('.name').textContent = name
-}
 
 const onConnected = ({ root, instance }) => {
     instance.registerEvent(root.querySelector('.change'), 'click', () => {
@@ -30,6 +26,12 @@ const onConnected = ({ root, instance }) => {
             nameElement.textContent = 'Dave'
         }
     })
+}
+
+const onUpdate = ({ propertyName, value, instance, root }) => {
+    switch (propertyName) {
+        case 'name': root.querySelector('.name').textContent = value
+    }
 }
 
 registerComponent({

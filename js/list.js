@@ -1,4 +1,5 @@
 import { registerComponent } from './utils/components.js'
+import { subscribe } from "./utils/events.js";
 import './listItem.js'
 
 const elementName = 'app-list';
@@ -23,8 +24,11 @@ const template = /*html*/`
 const onConnected = ({ root }) => {
     const listElement = root.querySelector('#listItems')
     
-    const addListItem = () => {
-        listElement.appendChild(document.createElement('app-list-item'))
+    const addListItem = ({ id, name }) => {
+        const listItem = document.createElement('app-list-item')
+        listItem.id = id
+        listElement.name = name
+        listElement.appendChild(listItem)
     }
 
     const removeListItem = () => {
@@ -32,10 +36,6 @@ const onConnected = ({ root }) => {
         if (listElement.childElementCount > 0) {
             listElement.removeChild(listElement.lastElementChild)
         }
-    }
-
-    for (let i = 0; i < 3; i++) {
-        addListItem()
     }
 
     root.querySelector('#add').addEventListener(
@@ -53,10 +53,14 @@ const onConnected = ({ root }) => {
             removeListItem()
         }
     )
+
+    subscribe('stateUpdated', ({ detail: { state } }) => {
+        state.listItems.forEach(addListItem);
+    })
 }
 
 registerComponent({
     elementName,
     template,
-    onConnected
+    onConnected,
 })

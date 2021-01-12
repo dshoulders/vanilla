@@ -1,8 +1,5 @@
 import './list.js'
-
-window.appState = {
-    listItems: [{  }],
-};
+import './utils/state.js'
 
 const appRoot = document.createElement('app-list')
 
