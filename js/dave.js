@@ -1,3 +1,7 @@
+import { registerComponent } from './utils/components.js'
+
+const elementName = 'app-dave'
+
 const template = /*html*/`
     <style>
         .dave {
@@ -9,24 +13,7 @@ const template = /*html*/`
     <div class="dave">Dave</div>
 `
 
-const templateNode = document.createElement('template')
-
-templateNode.setAttribute('id', 'dave')
-templateNode.innerHTML = template
-
-document.body.appendChild(templateNode)
-
-class Dave extends HTMLElement {
-    constructor() {
-        super();
-
-        const template = document.getElementById('dave')
-        const templateContent = template.content
-        const shadowRoot = 
-            this.attachShadow({mode: 'open'})
-            .appendChild(templateContent.cloneNode(true))
- 
-    }
-}
-
-customElements.define('app-dave', Dave)
+registerComponent({
+    elementName,
+    template,
+})
